@@ -1,0 +1,42 @@
+{
+  "uid": "aquamaroc-technique",
+  "title": "AquaMaroc · exploitation",
+  "schemaVersion": 40,
+  "editable": false,
+  "time": { "from": "now-30m", "to": "now" },
+  "refresh": "15s",
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "API joignable par Prometheus",
+      "gridPos": { "x": 0, "y": 0, "w": 8, "h": 6 },
+      "datasource": { "type": "prometheus", "uid": "aquamaroc-prometheus" },
+      "targets": [{ "refId": "A", "expr": "up{job=\"aquamaroc-api\"}", "instant": true }]
+    },
+    {
+      "id": 2, "type": "timeseries", "title": "Requêtes et erreurs 5xx par seconde",
+      "gridPos": { "x": 8, "y": 0, "w": 16, "h": 6 },
+      "datasource": { "type": "prometheus", "uid": "aquamaroc-prometheus" },
+      "targets": [
+        { "refId": "A", "legendFormat": "Requêtes/s", "expr": "sum(rate(aquamaroc_http_request_duration_seconds_count[5m]))" },
+        { "refId": "B", "legendFormat": "Erreurs 5xx/s", "expr": "sum(rate(aquamaroc_http_request_duration_seconds_count{status=~\"5..\"}[5m])) or vector(0)" }
+      ]
+    },
+    {
+      "id": 3, "type": "timeseries", "title": "Latence p50 et p95 de l’API",
+      "gridPos": { "x": 0, "y": 6, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
+      "datasource": { "type": "prometheus", "uid": "aquamaroc-prometheus" },
+      "targets": [
+        { "refId": "A", "legendFormat": "p50", "expr": "histogram_quantile(0.50, sum by(le)(rate(aquamaroc_http_request_duration_seconds_bucket[5m])))" },
+        { "refId": "B", "legendFormat": "p95", "expr": "histogram_quantile(0.95, sum by(le)(rate(aquamaroc_http_request_duration_seconds_bucket[5m])))" }
+      ]
+    },
+    {
+      "id": 4, "type": "timeseries", "title": "Mémoire résidente du processus API",
+      "gridPos": { "x": 12, "y": 6, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
+      "datasource": { "type": "prometheus", "uid": "aquamaroc-prometheus" },
+      "targets": [{ "refId": "A", "expr": "process_resident_memory_bytes{job=\"aquamaroc-api\"}" }]
+    }
+  ]
+}

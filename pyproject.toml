@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools==81.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aquamaroc-ai"
+version = "0.1.0"
+description = "Socle API et ingestion traçable AquaMaroc AI"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi==0.136.0", "uvicorn==0.44.0", "pydantic==2.12.5",
+  "pydantic-settings==2.13.1", "SQLAlchemy==2.0.48",
+  "psycopg2-binary==2.9.12", "alembic>=1.16,<2",
+  "openpyxl==3.1.5", "PyYAML==6.0.3", "prometheus-client==0.26.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9,<10", "httpx==0.28.1", "ruff>=0.14,<1"]
+
+[tool.setuptools.packages.find]
+include = ["services*", "pipelines*"]
+
+[tool.pytest.ini_options]
+testpaths = ["services/api/tests", "pipelines/tests", "machine-learning/tests"]
+pythonpath = [".", "machine-learning/src"]
+markers = ["postgres: requires isolated TEST_DATABASE_URL PostgreSQL database"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = [".venv", ".venv-verify", ".cache", "node_modules", ".pytest-*", ".pytest_cache", ".ruff_cache", "apps/mobile/ios/Flutter/ephemeral"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["B008"]

@@ -1,0 +1,72 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4@sha256:44126d872ac91993766c341e369c539e8196614321765d36a6f1bab0419a5fa5
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aquamaroc}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configurer POSTGRES_PASSWORD dans .env}
+      POSTGRES_DB: ${POSTGRES_DB:-aquamaroc}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  migrate:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    environment: &api_environment
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-aquamaroc}:${POSTGRES_PASSWORD:?Configurer POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-aquamaroc}
+      APP_MODE: ${APP_MODE:-official}
+      CORS_ORIGINS: ${CORS_ORIGINS:-["http://localhost:3000","http://127.0.0.1:3000"]}
+      RAW_ARCHIVE_DIR: /app/data/archive
+    command: ["python", "-m", "alembic", "upgrade", "head"]
+    depends_on:
+      db:
+        condition: service_healthy
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    environment:
+      <<: *api_environment
+      DEMO_FORECAST_PATH: /app/demo-forecast/forecast_demo.json
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - raw_archive:/app/data/archive
+      - ./data/raw:/app/data/raw:ro
+      - ./.cache/hydrology-demo:/app/demo-forecast:ro
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  web:
+    build:
+      context: ./apps/web
+      args:
+        NEXT_PUBLIC_API_URL: http://127.0.0.1:8000
+    environment:
+      DEMO_FORECAST_PATH: /app/demo-forecast/forecast_demo.json
+    volumes:
+      - ./.cache/hydrology-demo:/app/demo-forecast:ro
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  postgres_data:
+  raw_archive:

@@ -1,0 +1,15 @@
+# Fixture synthétique uniquement ; ne pas réutiliser pour une source officielle sans audit.
+mode: demo
+sheet: Mesures_DEMO
+header_row: 2
+columns:
+  reservoir_name: Barrage
+  observation_date: Date du relevé
+  storage_mm3: Réserve (Mm3)
+  filling_rate_pct: Remplissage (%)
+units:
+  storage_mm3: Mm3
+  filling_rate_pct: '%'
+reservoirs:
+  Réservoir synthétique Alpha: 00000000-0000-0000-0000-000000000101
+  Réservoir synthétique Beta: 00000000-0000-0000-0000-000000000102

@@ -1,0 +1,17 @@
+.venv
+.venv-verify
+.pytest-*
+.docker-local
+.cache
+.git
+.env
+.env.*
+!.env.example
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/node_modules
+data/raw
+data/archive
+backups
+*.db

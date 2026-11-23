@@ -1,0 +1,17 @@
+groups:
+  - name: aquamaroc
+    rules:
+      - alert: AquaMarocApiScrapeDown
+        expr: up{job="aquamaroc-api"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "L’API ne répond plus aux collectes Prometheus."
+      - alert: AquaMarocApiServerErrors
+        expr: sum(rate(aquamaroc_http_request_duration_seconds_count{status=~"5.."}[5m])) > 0.2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Le taux absolu d’erreurs serveur reste élevé."

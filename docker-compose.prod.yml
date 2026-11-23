@@ -1,0 +1,144 @@
+name: aquamaroc-prod
+
+x-api-env: &api-env
+  APP_MODE: official
+  DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-aquamaroc}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requis}@db:5432/${POSTGRES_DB:-aquamaroc}
+  RAW_ARCHIVE_DIR: /app/data/archive
+  CORS_ORIGINS: '[]'
+
+x-api-image: &api-image
+  image: ${API_IMAGE:-aquamaroc-prod-api:local}
+  build:
+    context: .
+    dockerfile: services/api/Dockerfile
+
+services:
+  db:
+    image: postgis/postgis:16-3.4@sha256:44126d872ac91993766c341e369c539e8196614321765d36a6f1bab0419a5fa5
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aquamaroc}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requis}
+      POSTGRES_DB: ${POSTGRES_DB:-aquamaroc}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks: [storage]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    <<: *api-image
+    environment: *api-env
+    command: ["python", "-m", "alembic", "upgrade", "head"]
+    networks: [storage]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    <<: *api-image
+    environment:
+      <<: *api-env
+      METRICS_ENABLED: "true"
+    command: ["python", "-m", "uvicorn", "services.api.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log", "--no-proxy-headers"]
+    volumes:
+      - raw_archive:/app/data/archive
+      - ./data/raw:/app/data/raw:ro
+    networks: [app, storage]
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/ready', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    image: ${WEB_IMAGE:-aquamaroc-prod-web:local}
+    build:
+      context: ./apps/web
+      args:
+        NEXT_PUBLIC_API_URL: ""
+    networks: [app]
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  gateway:
+    image: nginx@sha256:901e593c95dc85f5a729f5765516321366ef4ac401821431d408897e95287d0a
+    ports:
+      - "127.0.0.1:${GATEWAY_PORT:-8080}:8080"
+    volumes:
+      - ./infrastructure/deploy/nginx.conf:/etc/nginx/nginx.conf:ro
+    entrypoint: ["nginx", "-g", "daemon off;"]
+    user: "101:101"
+    read_only: true
+    tmpfs: [/tmp]
+    networks: [app]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  prometheus:
+    profiles: [monitoring]
+    image: prom/prometheus@sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus", "--storage.tsdb.retention.time=15d"]
+    volumes:
+      - ./infrastructure/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./infrastructure/monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    networks: [app]
+    restart: unless-stopped
+
+  grafana:
+    profiles: [monitoring]
+    image: grafana/grafana@sha256:0615ec4fbd4072004b7d86b46ded63013a74b7d6eb1119273dd89e8fa25c13cf
+    ports:
+      - "127.0.0.1:${GRAFANA_PORT:-3300}:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-}
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+    entrypoint: ["/bin/sh", "-ec", 'test "$${#GF_SECURITY_ADMIN_PASSWORD}" -ge 16 || { echo "GRAFANA_ADMIN_PASSWORD : 16 caractères minimum" >&2; exit 1; }; exec /run.sh']
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infrastructure/monitoring/provisioning:/etc/grafana/provisioning:ro
+      - ./infrastructure/monitoring/dashboards:/var/lib/aquamaroc-dashboards:ro
+    networks: [app]
+    restart: unless-stopped
+    depends_on: [prometheus]
+
+networks:
+  app:
+  storage:
+    internal: true
+
+volumes:
+  postgres_data:
+  raw_archive:
+  prometheus_data:
+  grafana_data:

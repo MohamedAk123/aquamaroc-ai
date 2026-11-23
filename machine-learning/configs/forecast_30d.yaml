@@ -1,0 +1,12 @@
+status: insufficient_history
+horizon_days: 30
+advanced_training_enabled: false
+candidates: [catboost, xgboost, lightgbm]
+baselines: [naive_last_value, moving_average]
+split_strategy: chronological_purged
+selection_metric: mae
+validation_start: "2026-09-20"
+test_start: "2026-10-13"
+seed: 42
+time_budget_seconds: null
+cat_features: [reservoir_id]

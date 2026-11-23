@@ -1,0 +1,4 @@
+# Les dépendances et le packaging sont centralisés à la racine du monorepo.
+[tool.aquamaroc]
+dependency_manifest = "../../pyproject.toml"
+entrypoint = "services.api.app.main:app"

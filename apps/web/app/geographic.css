@@ -1,0 +1,171 @@
+.geographic-panel,
+.quality-journal {
+  padding: 1.2rem;
+  margin-block: 1rem;
+  min-width: 0;
+}
+.preferences-form,
+.preferences-fields,
+.preferences-fields label {
+  display: grid;
+  gap: 1rem;
+}
+.preferences-form {
+  max-width: 48rem;
+}
+.preferences-fields label {
+  gap: 0.4rem;
+  font-weight: 600;
+}
+.preferences-fields select {
+  width: 100%;
+  font-weight: normal;
+}
+.preferences-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.geographic-panel h2,
+.quality-journal h2 {
+  font-size: 1.2rem;
+  font-weight: 750;
+  margin-bottom: 0.75rem;
+}
+.geo-filter,
+.journal-actions label {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 100%;
+}
+.geo-filter {
+  width: max-content;
+}
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin-block: 1rem;
+  font-size: 0.85rem;
+}
+.map-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.map-legend span {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+}
+.geographic-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+.geographic-map {
+  position: relative;
+  min-height: 25rem;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: #e2eef7;
+}
+.libre-map {
+  position: absolute;
+  inset: 0;
+  background: #e2eef7;
+}
+.libre-attribution,
+.libre-map-error {
+  position: absolute;
+  z-index: 2;
+  background: #fff;
+  color: #16324e;
+  padding: 0.25rem 0.45rem;
+  border-radius: 0.2rem;
+  font-size: 0.75rem;
+}
+.libre-attribution {
+  right: 0.35rem;
+  bottom: 0.35rem;
+}
+.libre-map-error {
+  left: 0.35rem;
+  top: 0.35rem;
+  max-width: 80%;
+}
+.dam-marker {
+  display: block;
+  border-radius: 50%;
+  border: 2px solid white;
+  width: 24px;
+  height: 24px;
+  box-shadow: 0 1px 4px #142d55;
+  cursor: pointer;
+}
+.geographic-detail ul {
+  display: grid;
+  gap: 0.25rem;
+  margin-block: 0.7rem;
+}
+.geographic-detail button {
+  width: 100%;
+  text-align: left;
+  padding: 0.45rem;
+  border-radius: 0.4rem;
+  background: #eaf4fb;
+}
+.geographic-detail button[aria-pressed="true"] {
+  color: white;
+  background: #174478;
+}
+.geographic-selection {
+  padding: 0.75rem;
+  border: 1px solid #cbdef0;
+  border-radius: 0.5rem;
+}
+.geographic-selection a {
+  text-decoration: underline;
+}
+.journal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem;
+  margin-block: 0.8rem;
+}
+.journal-actions .journal-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: center;
+}
+.journal-table {
+  overflow: auto;
+  margin-block: 0.75rem;
+}
+.journal-table table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.journal-table :is(th, td) {
+  padding: 0.6rem;
+  vertical-align: top;
+  border-bottom: 1px solid #dce7f0;
+}
+.journal-table thead {
+  background: #eaf4fb;
+}
+.journal-table code {
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 850px) {
+  .geographic-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .geographic-map {
+    min-height: 19rem;
+  }
+}

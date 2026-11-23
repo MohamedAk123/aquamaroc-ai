@@ -1,0 +1,8 @@
+status: exploratory_retrospective
+reference_start: "2026-08-01"
+reference_end: "2026-09-30"
+analysis_end: "2026-10-31"
+stages: [business_rules, isolation_forest]
+contamination: auto
+reference_score_percentile: 5
+automatic_risk_notifications: false

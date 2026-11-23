@@ -1,0 +1,255 @@
+{
+  "data_kind": "OFFICIAL",
+  "reservoir_count": 5,
+  "observation_count": 460,
+  "first_date": "2026-08-01",
+  "last_date": "2026-10-31",
+  "dataset_sha256": "c2214038369fcd4f735f55f0f7b82cfa1be13689fdf5d3744d054f9c3f66a075",
+  "input_files": [
+    {
+      "filename": "data_barrages_tensift_aout_2026.xlsx",
+      "sha256": "818c761003cc96ba0bf0fd3da076089f956020ac09905de97b2dbefef54358d7",
+      "resource_url": "https://data.gov.ma/data/fr/dataset/0aff0dd1-3c7e-4e14-9cbf-18782902a6e4/resource/0b69e96f-6c95-40ff-8c91-3721984b2613/download/data_barrages_tensift_aout_2026.xlsx",
+      "sheet": "Août_2026",
+      "rejected_rows": 0
+    },
+    {
+      "filename": "data_barrages_tensift_oct_2026.xlsx",
+      "sha256": "ff63f27e3b8e8b82073bdf424bf355754c694230c61d4db3b0d013e19a643c3d",
+      "resource_url": "https://data.gov.ma/data/fr/dataset/0aff0dd1-3c7e-4e14-9cbf-18782902a6e4/resource/aae7d44c-6170-45cf-a21a-9a6fde498c3a/download/data_barrages_tensift_oct_2026.xlsx",
+      "sheet": "Oct_2026",
+      "rejected_rows": 0
+    },
+    {
+      "filename": "data_barrages_tensift_sept_2026.xlsx",
+      "sha256": "54195396f6358913416770b8dc2e90f1976d806186e50a96c75ca7fd6721eb46",
+      "resource_url": "https://data.gov.ma/data/fr/dataset/0aff0dd1-3c7e-4e14-9cbf-18782902a6e4/resource/57580e59-8b9c-4bde-bf9f-2a25107bbf6e/download/data_barrages_tensift_sept_2026.xlsx",
+      "sheet": "Sept_2026",
+      "rejected_rows": 0
+    }
+  ],
+  "reservoirs": {
+    "2eafc15b-26ff-5044-8554-4f015a0b1080": {
+      "name": "Lalla Takerkoust",
+      "observations": 92,
+      "first_date": "2026-08-01",
+      "last_date": "2026-10-31",
+      "duplicates": 0,
+      "interval_days": {
+        "1": 91
+      },
+      "missing_days_on_daily_grid": 0,
+      "null_storage": 0,
+      "null_filling_rate": 0,
+      "missing_publication_dates": 92,
+      "storage_distribution": {
+        "count": 92,
+        "min": 30.314,
+        "max": 42.172,
+        "mean": 34.853271739130435,
+        "std": 3.582321657635805
+      },
+      "daily_variation_mm3": {
+        "count": 91,
+        "min": -0.589,
+        "max": 2.0,
+        "mean": -0.13030769230769232,
+        "std": 0.4218300447385476
+      },
+      "verified_capacity_mm3": "50.8200",
+      "capacity_source": "https://www.data.gov.ma/data/dataset/situation-journaliere-des-barrages-dans-le-bassin-du-tensift"
+    },
+    "47da7be2-e668-5a89-8eb7-986d6122303a": {
+      "name": "Yacoub El Mansour",
+      "observations": 92,
+      "first_date": "2026-08-01",
+      "last_date": "2026-10-31",
+      "duplicates": 0,
+      "interval_days": {
+        "1": 91
+      },
+      "missing_days_on_daily_grid": 0,
+      "null_storage": 0,
+      "null_filling_rate": 0,
+      "missing_publication_dates": 92,
+      "storage_distribution": {
+        "count": 92,
+        "min": 41.61,
+        "max": 50.454,
+        "mean": 47.23448913043478,
+        "std": 3.0768807627437766
+      },
+      "daily_variation_mm3": {
+        "count": 91,
+        "min": -2.27,
+        "max": 0.398,
+        "mean": -0.03835164835164835,
+        "std": 0.4611026291241409
+      },
+      "verified_capacity_mm3": "57.4500",
+      "capacity_source": "https://www.data.gov.ma/data/dataset/situation-journaliere-des-barrages-dans-le-bassin-du-tensift"
+    },
+    "48d457f9-4ff5-54ec-ad5d-7ec1f4de99b5": {
+      "name": "Abou El Abess Sebti",
+      "observations": 92,
+      "first_date": "2026-08-01",
+      "last_date": "2026-10-31",
+      "duplicates": 0,
+      "interval_days": {
+        "1": 91
+      },
+      "missing_days_on_daily_grid": 0,
+      "null_storage": 0,
+      "null_filling_rate": 0,
+      "missing_publication_dates": 92,
+      "storage_distribution": {
+        "count": 92,
+        "min": 17.947,
+        "max": 20.56,
+        "mean": 18.927315217391303,
+        "std": 0.8089290145853321
+      },
+      "daily_variation_mm3": {
+        "count": 91,
+        "min": -0.102,
+        "max": 0.603,
+        "mean": -0.024230769230769233,
+        "std": 0.07134024293514599
+      },
+      "verified_capacity_mm3": "22.3700",
+      "capacity_source": "https://www.data.gov.ma/data/dataset/situation-journaliere-des-barrages-dans-le-bassin-du-tensift"
+    },
+    "49c69c89-6657-5a22-ab54-cc15f48efe35": {
+      "name": "Sd Mohamed Ben Slimane El Jazouli",
+      "observations": 92,
+      "first_date": "2026-08-01",
+      "last_date": "2026-10-31",
+      "duplicates": 0,
+      "interval_days": {
+        "1": 91
+      },
+      "missing_days_on_daily_grid": 0,
+      "null_storage": 0,
+      "null_filling_rate": 0,
+      "missing_publication_dates": 92,
+      "storage_distribution": {
+        "count": 92,
+        "min": 8.178,
+        "max": 9.459,
+        "mean": 8.785173913043478,
+        "std": 0.4099002160838143
+      },
+      "daily_variation_mm3": {
+        "count": 91,
+        "min": -0.026,
+        "max": 0.067,
+        "mean": -0.014076923076923077,
+        "std": 0.010240225325077987
+      },
+      "verified_capacity_mm3": "12.3100",
+      "capacity_source": "https://www.data.gov.ma/data/dataset/situation-journaliere-des-barrages-dans-le-bassin-du-tensift"
+    },
+    "cd9900c7-2725-5f8f-8fff-c11216a752d3": {
+      "name": "Bge My abdrhmane",
+      "observations": 92,
+      "first_date": "2026-08-01",
+      "last_date": "2026-10-31",
+      "duplicates": 0,
+      "interval_days": {
+        "1": 91
+      },
+      "missing_days_on_daily_grid": 0,
+      "null_storage": 0,
+      "null_filling_rate": 0,
+      "missing_publication_dates": 92,
+      "storage_distribution": {
+        "count": 92,
+        "min": 46.877,
+        "max": 50.962,
+        "mean": 48.80004347826087,
+        "std": 1.0643216140385583
+      },
+      "daily_variation_mm3": {
+        "count": 91,
+        "min": -0.121,
+        "max": 1.254,
+        "mean": -0.04489010989010989,
+        "std": 0.14140009874170437
+      },
+      "verified_capacity_mm3": "58.9900",
+      "capacity_source": "https://www.data.gov.ma/data/dataset/situation-journaliere-des-barrages-dans-le-bassin-du-tensift"
+    }
+  },
+  "schema_note": "Les éditions épinglées du Tensift comportent une ligne d’en-tête supplémentaire en octobre. L’import vérifié préserve les deux unités.",
+  "weather_in_dataset": false,
+  "missing_publication_dates": 460,
+  "windows": {
+    "J+7": {
+      "horizon_days": 7,
+      "validation_start": "2026-09-20",
+      "test_start": "2026-10-13",
+      "calendar_span_days": 92,
+      "minimum_span_for_three_blocks": 24,
+      "calendar_pairs_after_purge": {
+        "train": 215,
+        "validation": 80,
+        "test": 60
+      },
+      "distinct_origin_days": {
+        "train": 43,
+        "validation": 16,
+        "test": 12
+      },
+      "calendar_pairs_with_all_lags": {
+        "train": 65,
+        "validation": 80,
+        "test": 60
+      },
+      "pairs_with_verified_publication": {
+        "train": 0,
+        "validation": 0,
+        "test": 0
+      },
+      "purged_pairs": 70,
+      "ambiguous_origins": 0,
+      "has_three_calendar_blocks": true,
+      "has_three_verified_blocks": false,
+      "decision": "insufficient_history"
+    },
+    "J+30": {
+      "horizon_days": 30,
+      "validation_start": "2026-09-20",
+      "test_start": "2026-10-13",
+      "calendar_span_days": 92,
+      "minimum_span_for_three_blocks": 93,
+      "calendar_pairs_after_purge": {
+        "train": 100,
+        "validation": 0,
+        "test": 0
+      },
+      "distinct_origin_days": {
+        "train": 20,
+        "validation": 0,
+        "test": 0
+      },
+      "calendar_pairs_with_all_lags": {
+        "train": 0,
+        "validation": 0,
+        "test": 0
+      },
+      "pairs_with_verified_publication": {
+        "train": 0,
+        "validation": 0,
+        "test": 0
+      },
+      "purged_pairs": 210,
+      "ambiguous_origins": 0,
+      "has_three_calendar_blocks": false,
+      "has_three_verified_blocks": false,
+      "decision": "insufficient_history"
+    }
+  },
+  "ready_for_experiments": false,
+  "decision": "insufficient_history",
+  "reason": "460 dates de publication manquantes. Consulter les effectifs par horizon et par bloc avant toute comparaison. Aucune approbation d’entraînement avancé n’est émise par cet audit."
+}
